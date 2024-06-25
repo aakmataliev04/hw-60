@@ -1,10 +1,11 @@
 import './App.css';
+import Chat from './containers/Chat';
 
 function App() {
 
   return (
     <>
-    App
+    <Chat />
     </>
   );
 }
