@@ -4,3 +4,7 @@ export interface MessageType {
   author: string
   datetime: string
 }
+export interface FormData {
+  author: string
+  message: string
+}

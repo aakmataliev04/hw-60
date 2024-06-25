@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import Messages from '../components/Messages/Messages';
-import { MessageType } from '../types';
+import {MessageType} from '../types';
+import SendMessageForm from '../components/SendMessageForm/SendMessageForm';
 
 const url = 'http://146.185.154.90:8000/messages';
 
 const Chat = () => {
+  const [formData, setFormData] = useState({author: '', message: ''});
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [dateTimeForLastMessages, setDateTimeForLastMessages] = useState('');
 
@@ -46,13 +48,32 @@ const Chat = () => {
     return () => clearInterval(interval);
   }, [dateTimeForLastMessages]);
 
+  const changeFormData = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prevState => {
+      return {...prevState, [event.target.name]: event.target.value};
+    });
+  };
+  const sendMessage = async (event: React.FormEvent<HTMLFormElement>, formData) => {
+    event.preventDefault();
+    const body = new URLSearchParams();
+    body.append('author', formData.author);
+    body.append('message', formData.message);
+
+    await fetch('http://146.185.154.90:8000/messages', {
+      method: 'POST',
+      body,
+    });
+  };
+
   return (
-    <div className="row mt-4">
-      <div className="col-md-12" style={{ borderTop: '2px solid linen' }}>
-        <h3 className="mb-3 mt-3 ml-4">Chat:</h3>
-        <Messages messages={messages} />
-      </div>
-    </div>
+    <>
+      <SendMessageForm
+        formData={formData}
+        onChangeFormData={(event) => changeFormData(event)}
+        onSubmitForm={sendMessage}
+      />
+      <Messages messages={messages}/>
+    </>
   );
 
 };

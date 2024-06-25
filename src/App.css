@@ -1,5 +1,10 @@
+body {
+  background: lightyellow;
+}
 #root {
   max-width: 1280px;
-  margin: 0 auto;
+  background: lightgoldenrodyellow;
+  margin: 40px 50px;
   padding: 2rem;
+  border: 2px solid linen;
 }
